@@ -1,0 +1,7 @@
+bin/docker-prune.sh
+**/*Package.tar.bz2
+**/*.bz2
+**/*.bz
+**/*.tar
+**/*.zip
+/www/html/*

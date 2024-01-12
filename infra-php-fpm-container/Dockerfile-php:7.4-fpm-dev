@@ -1,0 +1,40 @@
+# Use an official PHP runtime as a parent image
+FROM php:7.4-fpm
+
+#https://hub.docker.com/_/php/
+#https://www.php.net/manual/pt_BR/book.image.php
+RUN apt-get update && apt-get install -y \
+    libfreetype-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd mysqli pdo pdo_mysql
+
+RUN docker-php-ext-enable pdo_mysql mysqli
+
+#RUN pecl install redis-5.3.7 \
+#    && pecl install xdebug-3.2.1 \
+#    && docker-php-ext-enable redis xdebug
+
+RUN apt-get install -y \
+    iputils-ping \
+    curl \
+    wget \
+    nmap \
+    tcpdump
+
+RUN apt-get install -y lsb-release apt-transport-https ca-certificates
+RUN apt-get install -y default-mysql-client graphviz clamav aspell ghostscript
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+
+#    
+#       \
+#    php7.4-pspell php7.4-curl php7.4-gd php7.4-intl php7.4-mysql \
+#    php7.4-xml php7.4-xmlrpc php7.4-ldap php7.4-zip php7.4-soap php7.4-mbstring
+
+COPY php.ini-development /usr/local/etc/php/php.ini
+COPY php-fpm-dev.conf /usr/local/etc/php-fpm.conf 
+COPY www-dev.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Expose port 9000 to communicate with the PHP-FPM process
+EXPOSE 6665

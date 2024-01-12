@@ -1,0 +1,32 @@
+---
+- name: Playbook To Install Joomla Service
+  hosts: localhost
+  become: yes
+  vars_files:
+    - "{{ 'ansible-playbook-variables-dev.yml' if AMBIENTE_DE == 'dev' else 'ansible-playbook-variables-prod.yml' }}"
+  
+  tasks:
+    - name: DevEnv - Debug Mode -> show  DOCKER_VOLUME_WWW_HTML_PATH var
+      debug:
+        var: DOCKER_VOLUME_WWW_HTML_PATH
+      when: RUN_IN_DEBUG_MODE == "true"
+
+    - name: DevEnv - Downloading Joomla -> Download Joomla archive
+      get_url:
+        url: "https://downloads.joomla.org/cms/joomla3/3-10-12/Joomla_3-10-12-Stable-Full_Package.tar.bz2?format=bz2"
+        dest: "{{ playbook_dir }}/Joomla_3-10-12-Stable-Full_Package.tar.bz2"
+        mode: '0644'
+
+    - name: DevEnv - Create var/www/html/appcontext_dir 
+      file:  
+        path: "{{ DOCKER_VOLUME_WWW_HTML_PATH }}/{{ APP_CONTEXT }}" 
+        state: directory
+        mode: '0755'
+
+    - name: DevEnv - Unarchive Joomla in /var/www/html/appcontext
+      ansible.builtin.unarchive:
+        src: "{{ playbook_dir }}/Joomla_3-10-12-Stable-Full_Package.tar.bz2"
+        dest: "{{ DOCKER_VOLUME_WWW_HTML_PATH }}/{{ APP_CONTEXT }}"
+        remote_src: yes
+        creates: "{{ playbook_dir }}/Joomla_3-10-12-Stable-Full_Package"
+

@@ -1,0 +1,44 @@
+#+Title: 
+
+
+* Introdução
+
+* Como utilizar
+
+** Fazer o clone do repositorio
+
+#+NAME:
+#+BEGIN_SRC shell :session s1 :results output :exports both 
+
+#+END_SRC
+
+** Criar os containers
+
+
+
+#+NAME:
+#+BEGIN_SRC shell :session s1 :results output :exports both 
+
+#+END_SRC
+
+Esses sao os container gerados...
+
+
+
+** Clonar o moodle pro apache2 poder servi-lo
+
+
+
+#+NAME:
+#+BEGIN_SRC shell :session s1 :results output :exports both 
+
+#+END_SRC
+
+
+** Acessar o joomla
+
+
+
+* Ref
+
+

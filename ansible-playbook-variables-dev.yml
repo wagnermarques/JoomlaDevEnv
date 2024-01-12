@@ -1,0 +1,40 @@
+NGINX_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-nginx-dev
+NGINX_DOCKER_IMAGE_NAME:     fzl-joomla-service-profarts-nginx-dev:0.0.1
+NGINX_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-nginx-dev
+
+APACHE2_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-apache2-dev
+APACHE2_DOCKER_IMAGE_NAME:     fzl-joomla-service-profarts-apache2-dev:0.0.1
+APACHE2_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-apache2-dev
+
+DOCKER_VOLUME_WWW_HTML_PATH: "{{ playbook_dir }}/www/html"
+
+MARIADB_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-mariadb-service-dev
+MARIADB_DOCKER_IMAGE_NAME:     fzl-joomla-service-profarts-mariadb-service-dev:0.0.1
+MARIADB_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-mariadb-service-dev
+
+POSTGRESQL_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-postgresql-service-dev
+POSTGRESQL_DOCKER_IMAGE_NAME:     fzl-joomla-service-profarts-postgresql-service-dev:0.0.1
+POSTGRESQL_DOCKER_CONTAINER_NAME: fzl-joomla-service-profarts-postgresql-service-dev
+
+MARIADB_ROOT_PASSWORD: "Admin123*"
+POSTGRESQL_POSTGRES_PASSWORD: "Admin123*"
+
+PHPFPM_DOCKER_CONTAINER_NAME: joomla-service-php7.4fpm-service-dev
+PHPFPM_DOCKER_IMAGE_NAME: joomla-service-php7.4fpm-service-dev:0.0.1
+PHPFPM_DOCKER_CONTAINER_NAME: joomla-service-php7.4fpm-service-dev
+
+APACHE2_PORTS: "9998:80"
+PHP_FPM_PORTS: "6665:80"
+NGINX_PORTS: "8887:80"
+MARIADB_PORTS: "7776:3306"
+
+JOOMLA_DOWNLOAD_LINK: https://downloads.joomla.org/cms/joomla3/3-10-12/Joomla_3-10-12-Stable-Full_Package.tar.bz2?format=bz2
+APP_CONTEXT: jcms
+
+DB_HOST: mysql_container_ip
+DB_NAME: joomla
+DB_USER: admin
+DB_PASSWORD: your_db_password
+
+DOCKER_NETWORK_NAME: joomla-service-profaulasbridge-network-dev
+

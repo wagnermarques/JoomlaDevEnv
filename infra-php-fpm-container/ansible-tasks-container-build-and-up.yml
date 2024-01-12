@@ -1,0 +1,20 @@
+    - name: DevEnv - Building PHP 7.4-FPM Docker image
+      docker_image:
+        name: "{{ PHPFPM_DOCKER_IMAGE_NAME }}"
+        source: build
+        build:
+          pull: yes
+          path: "{{ playbook_dir }}/infra-php-fpm-container"
+          dockerfile: Dockerfile-php:7.4-fpm-dev
+
+    - name: DevEnv - Run PHP 7.4-FPM container
+      docker_container:
+        name:  "{{ PHPFPM_DOCKER_CONTAINER_NAME }}"
+        image:  "{{ PHPFPM_DOCKER_IMAGE_NAME }}"
+        ports:
+          - "{{ PHP_FPM_PORTS }}"
+        network_mode: "{{ DOCKER_NETWORK_NAME }}"
+        volumes:
+          - "{{ DOCKER_VOLUME_WWW_HTML_PATH }}:/var/www/html:Z"
+        state: started
+        

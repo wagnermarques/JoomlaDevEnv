@@ -1,0 +1,50 @@
+# Use an official PHP runtime as a parent image
+FROM php:8-fpm
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+#https://hub.docker.com/_/php/
+#https://www.php.net/manual/pt_BR/book.image.php
+RUN apt-get update && apt-get install -y \
+    libfreetype-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libzip-dev \
+    libxml2-dev \
+    libicu-dev
+
+RUN docker-php-ext-configure gd --with-freetype
+#RUN docker-php-ext-configure zip --with-libzip #mconfigure: error: unrecognized options: --with-libzip'
+#RUN docker-php-ext-configure zip --with-libxml2 #mconfigure: error: unrecognized options: --with-libxml2
+#RUN docker-php-ext-configure intl --with-libicu #mconfigure: error: unrecognized options: --with-libicu
+
+RUN docker-php-ext-install -j$(nproc) gd mysqli exif pdo pdo_mysql zip soap intl
+RUN docker-php-ext-enable             gd mysqli exif pdo pdo_mysql zip soap intl
+
+#RUN pecl install redis-5.3.7 \
+#    && pecl install xdebug-3.2.1 \
+#    && docker-php-ext-enable redis xdebug
+
+RUN apt-get install -y \
+    vim \
+    iputils-ping \
+    curl \
+    wget \
+    nmap \
+    tcpdump
+
+
+COPY php.ini-development /usr/local/etc/php/php.ini
+COPY php-fpm-dev.conf /usr/local/etc/php-fpm.conf 
+COPY www-dev.conf /usr/local/etc/php-fpm.d/www.conf
+
+#moodledata
+#in production use volume instead
+RUN mkdir -p /var/www/moodledata
+RUN chown www-data:www-data -R /var/www/moodledata
+RUN chmod 775 -R /var/www/moodledata
+
+
+
+# Expose port 9000 to communicate with the PHP-FPM process
+EXPOSE 6665

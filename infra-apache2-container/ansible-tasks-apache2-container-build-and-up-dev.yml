@@ -1,0 +1,23 @@
+    - name: DevEnv - Building Apache2 docker_image  
+      docker_image:
+        name: '{{ APACHE2_DOCKER_IMAGE_NAME }}'
+        source: build
+        build:
+          pull: yes
+          path: "{{ playbook_dir }}/infra-apache2-container"
+          dockerfile: Dockerfile-DevEnv-apache2-ubuntu
+        
+    - name: DevEnv - Run Apache2 docker_container
+      docker_container:
+        name: "{{ APACHE2_DOCKER_CONTAINER_NAME }}"
+        image: "{{ APACHE2_DOCKER_IMAGE_NAME }}"
+        ports:
+          - "{{ APACHE2_PORTS }}"
+        network_mode: "{{ DOCKER_NETWORK_NAME }}"
+        volumes:
+          - "{{ DOCKER_VOLUME_WWW_HTML_PATH }}:/var/www/html:Z"
+#        volumes:
+#          - "{{ JOOMLA_SERVICE_MOODLEDATA_PATH }}:/var/www/moodledata:Z"
+        state: started
+        
+        

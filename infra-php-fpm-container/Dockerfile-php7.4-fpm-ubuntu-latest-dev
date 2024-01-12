@@ -1,0 +1,43 @@
+# Start from Ubuntu
+FROM ubuntu:latest
+
+LABEL maintainer="wagnerdocri@gmail.com"
+
+# Let the container know that there is no tty
+ENV DEBIAN_FRONTEND noninteractive
+
+
+RUN apt-get update -y
+
+RUN apt install -y software-properties-common
+RUN add-apt-repository  -y ppa:ondrej/php
+RUN apt update -y
+
+RUN apt-get install -y php7.4-fpm php7.4-cli php7.4-mbstring php7.4-xml 
+RUN apt-get install -y php7.4-curl php7.4-gd php7.4-intl php7.4-mysql php7.4-xmlrpc php7.4-ldap php7.4-zip php7.4-soap
+RUN apt-get install -y graphviz aspell ghostscript clamav php7.4-pspell 
+
+#Copy configuration files
+COPY php.ini-development /etc/php/7.4/fpm/php.ini
+COPY php-fpm-dev.conf /etc/php/7.4/fpm/php-fpm.conf
+COPY www-dev.conf /etc/php/7.4/fpm/pool.d/www.conf
+
+# Create the directory for the PHP-FPM socket
+RUN mkdir -p /run/php
+
+EXPOSE 9000
+
+CMD ["php-fpm7.4", "-F"]
+
+# Install necessary packages
+#RUN apt-get -y update
+
+#RUN apt install -y php7.4 #php7.4-fpm
+#php7.4-pspell php7.4-curl php7.4-gd php7.4-intl php7.4-mysql php7.4-xml php7.4-xmlrpc php7.4-ldap php7.4-zip php7.4-soap php7.4-mbstring
+#RUN apt install -y graphviz aspell ghostscript 
+
+#RUN apt install -y mysql-client
+
+
+# Expose port 9000 to communicate with the PHP-FPM process
+#EXPOSE 9000

@@ -1,0 +1,22 @@
+- name: Printing SERVICE_MARIADB_DOCKER_CONTAINER_NAME variable
+  ansible.builtin.debug:
+    var: MARIADB_DOCKER_IMAGE_NAME
+
+- name: Build Mariadb Docker image
+  docker_image:
+    name: "{{ MARIADB_DOCKER_IMAGE_NAME }}"
+    tag: 0.0.1
+    source: build
+    build:
+      pull: yes
+      dockerfile: Dockerfile 
+      path: "{{ playbook_dir }}/infra-mariadb-container"
+    
+- name: Running Docker mariadb docker Container
+  docker_container:
+    name: "{{ MARIADB_DOCKER_CONTAINER_NAME }}"
+    image: "{{ MARIADB_DOCKER_IMAGE_NAME }}"
+    network_mode: "{{ DOCKER_NETWORK_NAME }}"
+    state: started
+    env:
+      MARIADB_ROOT_PASSWORD: "{{ MARIADB_ROOT_PASSWORD }}"
