@@ -3,40 +3,75 @@
 
 * Introdução
 
+O objetivo e criar rapidamente um ambiente de desenvolvimento com
+Joomla
+
+
 * Como utilizar
 
 ** Fazer o clone do repositorio
 
-#+NAME:
+#+NAME: ls ls ls
 #+BEGIN_SRC shell :session s1 :results output :exports both 
-
+cd $HOME
+git clone https://github.com/wagnermarques/JoomlaDevEnv.git
 #+END_SRC
+
 
 ** Criar os containers
 
+O comando abaixo sobe os containers para subir o joomla.
+
+Quando o ansible pedir "BECOME password:" forneca a sua senha de superusuario
 
 
-#+NAME:
+#+NAME: criando os containers
 #+BEGIN_SRC shell :session s1 :results output :exports both 
-
+cd $HOME/JoomlaDevEnv/bin
+./ansible-playbook-joomla-service-up.sh
 #+END_SRC
+
 
 Esses sao os container gerados...
 
-
-
-** Clonar o moodle pro apache2 poder servi-lo
-
-
-
-#+NAME:
+#+NAME: DOCKER PS
 #+BEGIN_SRC shell :session s1 :results output :exports both 
-
+wgn@wgnpc:~/JoomlaDevEnv/bin$ docker ps
+CONTAINER ID   IMAGE                                                   COMMAND                  CREATED              STATUS              PORTS                                      NAMES
+ee0abf22eb6f   fzl-joomla-service-profarts-apache2-dev:0.0.1           "apachectl -D FOREGR..."   About a minute ago   Up About a minute   0.0.0.0:9998->80/tcp                       fzl-joomla-service-profarts-apache2-dev
+4b7774a9359e   joomla-service-php7.4fpm-service-dev:0.0.1              "docker-php-entrypoi..."   About a minute ago   Up About a minute   6665/tcp, 9000/tcp, 0.0.0.0:6665->80/tcp   joomla-service-php7.4fpm-service-dev
+cac4b59cfab4   fzl-joomla-service-profarts-mariadb-service-dev:0.0.1   "docker-entrypoint.s..."   2 days ago           Up About a minute   3306/tcp                                   fzl-joomla-service-profarts-mariadb-service-dev
 #+END_SRC
+
 
 
 ** Acessar o joomla
 
+Acessando o localhost:9998 nao vemos o joomla porque precisamos apenas
+subimos os containers, falta fazer download do joomla. 
+
+[[./documentation/imgs/acessandoServidorViaBrowserAposSubirContainers.png]]
+
+pra fazer do download do joomla e colocar ele já no /var/www/html
+precisa rodar...
+
+#+NAME:
+#+BEGIN_SRC shell :session s1 :results output :exports both 
+cd $HOME/JoomlaDevEnv/bin/ansible-playbook-joomla-installation.sh 
+BECOME password: 
+#+END_SRC
+
+Lembrando que quando o ansible pedir "BECOME password: " ele está
+solicitando a senha do superusuario
+
+[[./documentation/imgs/acessandoServidorViaBrowserAposSubirContainersERodarAnsibleInstallJoomla.png]]
+
+Enrando no diretorio "JCMS" entramos tambem no joomla, que apresenta
+pagina de instalacao"
+
+[[./documentation/imgs/acessandoServidorViaBrowserAposSubirContainersERodarAnsibleInstallJoomlaEntrandoJCMS.png]]
+
+A partir dai e so instalar o joomla... 
 
 
 * Ref
